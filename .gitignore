@@ -1,0 +1,9 @@
+# Personal data must never be committed.
+*.ini
+!RefillCalendar.example.ini
+*.ics
+*.csv
+*.png
+*.jpg
+*.jpeg
+*.zip
