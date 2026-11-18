@@ -15,6 +15,21 @@ A small AutoHotkey v2 tool that tracks prescription refill dates and exports rem
 - When refills left reach zero, the request reminder says to ask the prescriber for a new prescription.
 - Weekend dates move to the nearest weekday. Holidays are not handled.
 
+## Easy install (Windows)
+
+1. Click the green **Code** button above, then **Download ZIP** ([direct link](https://github.com/smogmanus1/refillcalender/archive/refs/heads/main.zip)), and unzip it.
+2. Double-click **Install.cmd**.
+
+The installer sets up AutoHotkey v2 if you don't have it, copies Refill Calendar to `%LOCALAPPDATA%\Programs\RefillCalendar`, adds Start menu and Desktop shortcuts, and lists it in Settings > Apps. No administrator rights are needed for RefillCalendar itself.
+
+Prefer one line? Open PowerShell and paste:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/smogmanus1/refillcalender/main/Install.ps1)))
+```
+
+To remove it: **Settings > Apps > RefillCalendar > Uninstall**. Running the installer again updates an existing install.
+
 ## Requirements
 
 - Windows
