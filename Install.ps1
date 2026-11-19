@@ -70,6 +70,29 @@ function Find-Ahk {
 
 function Install-Ahk {
     Write-Step 'AutoHotkey v2 is not installed - installing it now (Windows may ask permission)'
+    # Offline first: an AutoHotkey setup file kept next to this installer (or in the folder above it, e.g. on a USB stick).
+    $localDirs = @()
+    if ($PSScriptRoot) {
+        $parent = Split-Path -Parent $PSScriptRoot
+        $localDirs += @{ Path = $PSScriptRoot; Deep = $false }
+        $localDirs += @{ Path = (Join-Path $PSScriptRoot 'Installers'); Deep = $true }
+        if ($parent) {
+            $localDirs += @{ Path = $parent; Deep = $false }
+            $localDirs += @{ Path = (Join-Path $parent 'PCMigrate\Installers'); Deep = $true }
+        }
+    }
+    foreach ($ld in $localDirs) {
+        if (-not (Test-Path -LiteralPath $ld.Path)) { continue }
+        foreach ($pat in 'AutoHotkey*setup*.exe', 'ahk-v2*.exe') {
+            $f = Get-ChildItem -LiteralPath $ld.Path -Filter $pat -File -Recurse:$ld.Deep -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($f) {
+                Write-Step "Using $($f.Name) from $($f.DirectoryName)"
+                Start-Process -FilePath $f.FullName -ArgumentList '/silent' -Wait
+                $p = Find-Ahk
+                if ($p) { return $p }
+            }
+        }
+    }
     $winget = Get-Command winget.exe -ErrorAction SilentlyContinue
     if ($winget) {
         try {
